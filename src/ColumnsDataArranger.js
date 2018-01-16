@@ -67,6 +67,10 @@ const isDateTime = type => {
     return type.indexOf('timestamp') !== -1 || type.indexOf('date') !== -1;
 };
 
+const isTextOrChar = type => {
+    return type.indexOf('char') !== -1 || type.indexOf('text') !== -1;
+};
+
 /**
  * Arranges columns data before loading.
  *
@@ -93,6 +97,8 @@ module.exports = (arrTableColumns, mysqlVersion) => {
         } else if (isDateTime(type)) {
             strRetVal += 'IF(`' + field +  '` IN(\'0000-00-00\', \'0000-00-00 00:00:00\'), \'-INFINITY\', CAST(`'
                 +  field + '` AS CHAR)) AS `' + field + '`,';
+        } else if (isTextOrChar(type)) {
+            strRetVal += 'IF(`' + field + '` IS NOT NULL, CONCAT(\'\\"\',REPLACE(`' + field + '`,\'\\"\',\'\\"\\"\'),\'\\"\'), NULL) AS `' + field + '`,';
         } else {
             strRetVal += '`' + field + '` AS `' + field + '`,';
         }

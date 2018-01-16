@@ -61,6 +61,8 @@ const mapDataTypes = (objDataTypesMap, mySqlDataType) => {
             retVal = increaseOriginalSize
                 ? objDataTypesMap[strDataType].increased_size
                 : objDataTypesMap[strDataType].type;
+        } else if ('bit' === strDataType && strDataTypeDisplayWidth === '1)') {
+            retVal = 'boolean';
         } else {
             // Should be converted with a length definition.
             retVal = increaseOriginalSize

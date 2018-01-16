@@ -259,7 +259,7 @@
        } else if (typeof field === 'number') {
          field = '' + field;
        } else if (typeof field === 'boolean') {
-         field = field ? '1' : '';
+         field = field ? '1' : '0';
        } else if (field instanceof Date) {
          //field = '' + field.getTime(); // In original version.
          field = field.getFullYear() + '-' + (field.getMonth() + 1) + '-' + field.getDate()
@@ -267,24 +267,17 @@
 
        } else if (typeof field === 'object' && field !== null) {
          field = JSON.stringify(field);
-       }
-       if (field) {
-         field = this._encoding === 'utf8' ? field.replace(/\u0000/g, ' ') : field;
-         containsdelimiter = field.indexOf(delimiter) >= 0;
-         containsQuote = field.indexOf(quote) >= 0;
-         containsLinebreak = field.indexOf('\r') >= 0 || field.indexOf('\n') >= 0;
+         containsQuote = field.indexOf('"') >= 0;
          if (containsQuote) {
            regexp = new RegExp(quote, 'g');
            field = field.replace(regexp, escape + quote);
          }
-         if (containsQuote || containsdelimiter || containsLinebreak || this.options.quoted || (this.options.quotedString && typeof line[i] === 'string')) {
-           field = quote + field + quote;
-         }
-         newLine += field;
-       } else if (this.options.quotedEmpty || ((this.options.quotedEmpty == null) && line[i] === '' && this.options.quotedString)) {
-         newLine += quote + quote;
+         field = quote + field + quote;
        }
-
+       if (field !== null) {
+         field = this._encoding === 'utf8' ? field.replace(/\u0000/g, ' ') : field;
+         newLine += field;
+       }
        if (i !== line.length - 1) {
          newLine += delimiter;
        }

@@ -54,7 +54,9 @@ module.exports = (self, tableName) => {
                 'NULL'                : 'NULL',
                 'UTC_DATE'            : "(CURRENT_DATE AT TIME ZONE 'UTC')",
                 'UTC_TIME'            : "(CURRENT_TIME AT TIME ZONE 'UTC')",
-                'UTC_TIMESTAMP'       : "(NOW() AT TIME ZONE 'UTC')"
+                'UTC_TIMESTAMP'       : "(NOW() AT TIME ZONE 'UTC')",
+                'b\'0\''              : "false",
+                'b\'1\''              : "true"
             };
 
             for (let i = 0; i < self._dicTables[tableName].arrTableColumns.length; ++i) {
